@@ -26,25 +26,25 @@ function getYoungestFile( folder ) {
             justFiles = [];
             files.forEach( function ( f ) {
                 var stats = fs.statSync( path.join( folder, f ) );
-                if ( stats.isFile() )
-                    justFiles.push( { name: path.join( folder, f ), bd: stats.birthtime } );
+                if ( stats.isFile() && f.indexOf('ticket')==-1 )
+                    justFiles.push( { name: path.join( folder, f ), bd: stats.mtime } );
             } );
 
-            justFiles.sort( function ( a, b ) {
+            // justFiles.sort( function ( a, b ) {
+            //
+            //     var atime = new Date( a.bd ).getTime();
+            //     var btime = new Date( b.bd ).getTime();
+            //
+            //     if ( atime < btime )
+            //         return 1;
+            //     if ( atime > btime )
+            //         return -1;
+            //
+            //     return 0;
+            //
+            // } );
 
-                var atime = new Date( a.bd ).getTime();
-                var btime = new Date( b.bd ).getTime();
-
-                if ( atime < btime )
-                    return 1;
-                if ( atime > btime )
-                    return -1;
-
-                return 0;
-
-            } );
-
-            resolve( justFiles[ 0 ].name );
+            resolve( _.sample(justFiles).name );
 
         })
 
